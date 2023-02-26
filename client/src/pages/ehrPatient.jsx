@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Form from 'react-bootstrap/Form';
 import useEth from "../contexts/EthContext/useEth";
+import Button from 'react-bootstrap/Button';
 
 function Patientehr() {
     const { state: { contract, accounts } } = useEth();
@@ -23,19 +24,17 @@ function Patientehr() {
         <>
             <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="name@example.com" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Example textarea</Form.Label>
-                    <Form.Control as="textarea" rows={3} />
+                    <Form.Label>Describe Your Problem</Form.Label>
+                    <Form.Control type="text" />
                 </Form.Group>
                 <Form.Select aria-label="Default select example" onClick={handleClick}>
-                    <option>Open this select menu</option>
+                    <option>Select Doctor</option>
                     {Dlist.map((d) => (
                         <option value={d.publicKey} key={d.publicKey}>{d.name}</option>
                     ))}
                 </Form.Select>
+                <br></br>
+                <Button variant="primary">Submit</Button>{' '}
             </Form>
 
         </>
