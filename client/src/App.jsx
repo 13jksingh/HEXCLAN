@@ -24,7 +24,6 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Switch,
   Route,
   Link
 } from 'react-router-dom';
@@ -50,10 +49,11 @@ class App extends Component {
         </EthProvider> */}
       
       {/* <EthProvider> */}
-      <Switch>
-        <Route path ="/" component = {Home} />
-        <Route path ="/login" component = {Login} />
-    </Switch>
+        <Routes>
+              <Route exact path="/login" element={<Login />}></Route>
+              <Route exact path="/" element={<Home />}></Route>
+              <Route exact path="/signup" element={<Patientehr />} ></Route>
+            </Routes>
       </EthProvider>
       </Router>
       </>
