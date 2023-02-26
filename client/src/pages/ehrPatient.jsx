@@ -7,14 +7,12 @@ function Patientehr() {
     const [Dlist, setDlist] = useState([]);
 
     async function listDoctor() {
-        const count = await contract.methods.readCount().call();
+        // const count = await contract.methods.readCount().call();
         var arr = [];
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < 2; i++) {
             const doctor_i = await contract.methods.listDoctor(i).call();
-            console.log(doctor_i);
-            arr.push(doctor_i.name);
+            arr.push(doctor_i);
         }
-        console.log(arr);
         setDlist(arr);
     }
     async function handleClick() {
@@ -35,11 +33,8 @@ function Patientehr() {
                 <Form.Select aria-label="Default select example" onClick={handleClick}>
                     <option>Open this select menu</option>
                     {Dlist.map((d) => (
-                        <option value="1">{d.name}</option>
+                        <option value={d.publicKey} key={d.publicKey}>{d.name}</option>
                     ))}
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
                 </Form.Select>
             </Form>
 

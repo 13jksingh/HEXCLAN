@@ -39,15 +39,13 @@ contract EHR {
     }
 
     doctor[] public listDoctor;
+    patient[] public listPatient;
 
     mapping (address => doctor) public mapDoctor;
     mapping (address => patient) public mapPatient;
     uint DoctorCount;
     uint PatientCount;
 
-    function readCount() public view returns(uint){
-        return listDoctor.length;
-    }
 
     function addDoctor(string memory _name , uint _age , address _publicKey) public {
         doctor storage newDoctor = mapDoctor[msg.sender];
@@ -59,11 +57,43 @@ contract EHR {
         DoctorCount = DoctorCount +1;
     }
     
+    function AccessList() public view returns(address[] memory){
+        return mapPatient[msg.sender].dAccess;
+    }
+
     function addPatient(string memory _name , uint _age) public {
         patient storage newPatient = mapPatient[msg.sender];
         newPatient.name = _name;
         newPatient.age = _age;
         newPatient._id = PatientCount;
+        listPatient.push(newPatient);
+    }
+
+    function revoke(address _doctor) public {
+        bool found = false;
+        for (uint i = 0 ; i < mapPatient[msg.sender].dAccess.length-1 ; i++){
+            if (mapPatient[msg.sender].dAccess[i] == _doctor){
+                found = true;
+            }
+            if (found){
+                mapPatient[msg.sender].dAccess[i] = mapPatient[msg.sender].dAccess[i+1];
+            }
+        }
+        if (found || mapPatient[msg.sender].dAccess[mapPatient[msg.sender].dAccess.length-1] == _doctor ){
+            mapPatient[msg.sender].dAccess.pop();
+        }
+        found = false;
+        for (uint i = 0 ; i < mapDoctor[_doctor].pAccess.length-1 ; i++){
+            if (mapDoctor[_doctor].pAccess[i] == msg.sender){
+                found = true;
+            }
+            if (found){
+                mapDoctor[_doctor].pAccess[i] = mapDoctor[_doctor].pAccess[i+1];
+            }
+        }
+        if (found || mapDoctor[_doctor].pAccess[mapDoctor[_doctor].pAccess.length-1] == msg.sender ){
+       mapDoctor[_doctor].pAccess.pop();
+        }
     }
 
     function giveAccess(address _doctor) public returns( patient memory) {
